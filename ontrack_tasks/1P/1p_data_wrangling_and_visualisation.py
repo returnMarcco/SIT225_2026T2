@@ -6,11 +6,12 @@ import pandas as pd
 
 CSV_PATH = Path(__file__).with_name("restaurant_pest_capture_data.csv")
 
-
+# Define function 
 def analyse_capture_data(csv_path: Path = CSV_PATH) -> None:
     """Load, validate, and summarise the PIR movement capture data."""
     data = pd.read_csv(csv_path)
-
+    
+    # Validate CSV data
     required_columns = {"timestamp", "has_captured_movement"}
     missing_columns = required_columns.difference(data.columns)
     if missing_columns:
@@ -21,11 +22,12 @@ def analyse_capture_data(csv_path: Path = CSV_PATH) -> None:
     parsed_movement = pd.to_numeric(
         data["has_captured_movement"], errors="coerce"
     )
-
+    
     duplicate_timestamps = data.duplicated(subset="timestamp", keep=False)
     invalid_timestamps = parsed_timestamps.isna()
     invalid_movement = parsed_movement.isna() | ~parsed_movement.isin([0, 1])
-
+    
+    # Print basic stats to the terminal (conditionally).
     print(f"CSV file: {csv_path}")
     print(f"Rows read: {len(data)}")
     print(f"Duplicate timestamp rows: {duplicate_timestamps.sum()}")
@@ -46,7 +48,8 @@ def analyse_capture_data(csv_path: Path = CSV_PATH) -> None:
     if valid.empty:
         print("\nNo valid data is available for calculating statistics.")
         return
-
+    
+    # Format and stats such as occurrences, time/end of capture, and capture duration.
     occurrences = int(valid["has_captured_movement"].sum())
     capture_start = valid["timestamp"].min()
     capture_end = valid["timestamp"].max()
