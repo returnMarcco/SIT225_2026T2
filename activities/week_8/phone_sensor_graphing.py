@@ -3,9 +3,7 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from pathlib import Path
 
-
 DATA_DIR = Path(__file__).parent / "data"
-
 
 def _plot_acceleration(axis):
     sensor_df = pd.read_csv(DATA_DIR / f"accel_{axis}.csv")
@@ -21,18 +19,14 @@ def _plot_acceleration(axis):
     figure.tight_layout()
     return figure
 
-
 def accel_x():
     return _plot_acceleration("x")
-
 
 def accel_y():
     return _plot_acceleration("y")
 
-
 def accel_z():
     return _plot_acceleration("z")
-
 
 def accel_combined_axis():
     figure, axis_plot = plt.subplots()
@@ -50,7 +44,6 @@ def accel_combined_axis():
     figure.autofmt_xdate()
     figure.tight_layout()
     return figure
-
 
 if __name__ == "__main__":
     accel_x()
